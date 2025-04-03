@@ -1,103 +1,117 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { FaUser, FaEnvelope, FaPhone, FaFileAlt, FaCalendarAlt, FaDollarSign } from "react-icons/fa";
+
+// Static Reservations Data
+const initialReservations = [
+  {
+    name: "John Doe",
+    status: "Pending",
+    email: "john.doe@example.com",
+    phone: "+1 234-567-890",
+    checkIn: "01/01/2024",
+    checkOut: "01/05/2024",
+    guests: "2 Adults, 1 Child",
+    total: "$500",
+    due: "$200",
+    docStatus: "Received",
+    resNumber: "#12345",
+  },
+  {
+    name: "Jane Smith",
+    status: "Cancelled",
+    email: "jane.smith@example.com",
+    phone: "+1 987-654-321",
+    checkIn: "02/01/2024",
+    checkOut: "02/03/2024",
+    guests: "1 Adult",
+    total: "$300",
+    due: "$100",
+    docStatus: "Pending",
+    resNumber: "#12346",
+  },
+  {
+    name: "Robert Chen",
+    status: "Confirmed",
+    email: "robert.chen@example.com",
+    phone: "+1 555-123-4567",
+    checkIn: "01/10/2024",
+    checkOut: "01/15/2024",
+    guests: "2 Adults",
+    total: "$750",
+    due: "$0",
+    docStatus: "Received",
+    resNumber: "#12347",
+  },
+  {
+    name: "Sarah Johnson",
+    status: "Pending",
+    email: "sarah.j@example.com",
+    phone: "+1 555-987-6543",
+    checkIn: "02/05/2024",
+    checkOut: "02/07/2024",
+    guests: "2 Adults",
+    total: "$400",
+    due: "$400",
+    docStatus: "Pending",
+    resNumber: "#12348",
+  }
+];
+
+// Function to get badge color based on status
+const getStatusColor = (status: string) => {
+  const statusColors: Record<string, string> = {
+    Pending: "bg-yellow-500 text-white",
+    Cancelled: "bg-red-500 text-white",
+    Confirmed: "bg-green-500 text-white",
+  };
+  return statusColors[status] || "bg-gray-500 text-white";
+};
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [reservations] = useState(initialReservations); // ✅ No `useEffect`, directly setting state
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+  return (
+    <div className="w-full min-h-screen bg-gray-900 text-white p-6 container mx-auto">
+      <h1 className="text-3xl font-bold mb-6 text-center text-white">Reservations</h1>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {reservations.map((res) => (
+          <Card key={res.resNumber} className="p-4 shadow-lg border border-gray-700 rounded-lg bg-gray-800">
+            <CardContent>
+              {/* Header with Name and Status Badge */}
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-lg font-semibold">{res.name}</h2>
+                <Badge className={`px-3 py-1 rounded-lg ${getStatusColor(res.status)}`}>{res.status}</Badge>
+              </div>
+
+              <p className="text-sm text-gray-400">Res. No: {res.resNumber}</p>
+
+              {/* Reservation Details */}
+              <div className="space-y-2 text-sm text-gray-300 mt-2">
+                <p className="flex items-center"><FaCalendarAlt className="mr-2 text-gray-500" /> {res.checkIn} - {res.checkOut}</p>
+                <p className="flex items-center"><FaEnvelope className="mr-2 text-gray-500" /> {res.email}</p>
+                <p className="flex items-center"><FaPhone className="mr-2 text-gray-500" /> {res.phone}</p>
+                <p className="flex items-center"><FaUser className="mr-2 text-gray-500" /> {res.guests}</p>
+                <p className="flex items-center"><FaFileAlt className="mr-2 text-gray-500" /> Doc(s): {res.docStatus}</p>
+                <p className="flex items-center font-bold"><FaDollarSign className="mr-2 text-green-400" /> Total: {res.total}</p>
+                <p className="flex items-center text-red-400 font-semibold">Due: {res.due}</p>
+              </div>
+
+              {/* View Room Button */}
+              <div className="mt-4">
+                <Button variant="outline" className="w-full bg-gray-700 text-white border-gray-600 hover:bg-gray-600">
+                  View Room
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }
